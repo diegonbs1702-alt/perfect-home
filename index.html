@@ -3,334 +3,682 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nuñez Fumigaciones - Diagnóstico Gratuito</title>
+    <title>Perfect Home | Ahorra en tu recibo de CFE</title>
     
-    <!-- ======================================================= -->
-    <!-- 🟢 1. PEGA TU PÍXEL DE META (FACEBOOK) AQUÍ DEBAJO      -->
-    <!-- ======================================================= -->
-    <!-- Ejemplo: <script> !function(f,b,e,v,n,t,s) ... </script> -->
+    <!-- Optimización 1: Preconectar servidor de Facebook para ganar milisegundos -->
+    <link rel="preconnect" href="https://connect.facebook.net">
 
+    <!-- Meta Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', 'TU_ID_DEL_PIXEL_AQUI'); // <-- CAMBIA ESTO POR TU ID REAL
+    fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=TU_ID_DEL_PIXEL_AQUI&ev=PageView&noscript=1"
+    /></noscript>
+    <!-- End Meta Pixel Code -->
 
+    <!-- Optimización 2: Atributo 'defer' para no bloquear el pintado de la página -->
+    <script src="https://cdn.tailwindcss.com" defer></script>
+    
+    <!-- Lucide Icons (CDN) diferido -->
+    <script src="https://unpkg.com/lucide@latest" defer></script>
 
-    <!-- ======================================================= -->
-    <!-- 🟢 2. PEGA TU PÍXEL DE GOOGLE ANALYTICS/ADS AQUÍ DEBAJO -->
-    <!-- ======================================================= -->
-    <!-- Ejemplo: <script async src="https://www.googletagmanager...></script> -->
-
-
-
-    <!-- Cargar Tailwind CSS y React -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+        /* Estilos personalizados menores */
+        html { scroll-behavior: smooth; }
+        .selection-bg::selection { background-color: #ffb111; color: #a70101; }
+    </style>
 </head>
-<body class="bg-slate-50 font-sans text-slate-800">
-    
-    <div id="root"></div>
+<body class="min-h-screen bg-slate-50 font-sans text-slate-800 selection-bg">
 
-    <script type="text/babel">
-        const { useState } = React;
+    <!-- Navigation -->
+    <nav id="navbar" class="fixed w-full z-50 transition-all duration-300 bg-[#a70101]/95 py-5">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <i data-lucide="sun" class="h-8 w-8 text-[#ffb111]"></i>
+                <span class="text-2xl font-bold text-white tracking-tight">
+                    Perfect <span class="text-[#ffb111]">Home</span>
+                </span>
+            </div>
+            <!-- Botón de contraste -->
+            <button onclick="openModal()" class="hidden md:flex items-center gap-2 bg-[#ffb111] hover:bg-[#e59f0f] text-[#a70101] px-6 py-2.5 rounded-full font-bold transition-all transform hover:scale-105 shadow-[0_0_15px_rgba(255,177,17,0.4)]">
+                <i data-lucide="zap" class="h-4 w-4"></i>
+                Cotizar mi Proyecto
+            </button>
+        </div>
+    </nav>
 
-        // Componentes de Iconos
-        const Icon = ({ path, className }) => (
-            <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" dangerouslySetInnerHTML={{ __html: path }}></svg>
-        );
-        const ShieldCheck = ({className}) => <Icon className={className} path='<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/>' />;
-        const Bug = ({className}) => <Icon className={className} path='<path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/><path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/><path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/><path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/><path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/><path d="M17.47 9c1.93-.2 3.53-1.9 3.53-4"/><path d="M18 13h4"/><path d="M21 21c0-2.1-1.7-3.9-3.8-4"/>' />;
-        const Home = ({className}) => <Icon className={className} path='<path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>' />;
-        const Clock = ({className}) => <Icon className={className} path='<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>' />;
-        const ArrowRight = ({className}) => <Icon className={className} path='<path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>' />;
-        const CheckCircle2 = ({className}) => <Icon className={className} path='<circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/>' />;
-        const Star = ({className}) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>;
-        const ShieldAlert = ({className}) => <Icon className={className} path='<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M12 8v4"/><path d="M12 16h.01"/>' />;
-        const ChevronRight = ({className}) => <Icon className={className} path='<path d="m9 18 6-6-6-6"/>' />;
-        const MapPin = ({className}) => <Icon className={className} path='<path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/>' />;
-        const Phone = ({className}) => <Icon className={className} path='<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>' />;
+    <!-- Hero Section -->
+    <section class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 bg-[#a70101] overflow-hidden">
+        <!-- Background elements -->
+        <div class="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none">
+            <div class="absolute top-[-10%] right-[-5%] w-96 h-96 rounded-full bg-[#ffb111] blur-[120px]"></div>
+            <div class="absolute bottom-[-10%] left-[-5%] w-96 h-96 rounded-full bg-red-400 blur-[120px]"></div>
+        </div>
 
-        function App() {
-            const [step, setStep] = useState(0);
-            const [isSubmitting, setIsSubmitting] = useState(false);
-            const [answers, setAnswers] = useState({
-                plaga: '',
-                ubicacion: '',
-                tiempo: '',
-                nombre: '',
-                telefono: ''
-            });
-            const [showOffer, setShowOffer] = useState(false);
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+            <div class="inline-block mb-4 px-4 py-1.5 rounded-full bg-[#ffb111]/20 border border-[#ffb111]/50 text-[#ffb111] font-semibold text-sm">
+                📍 Exclusivo para dueños de casa en Mérida, Yucatán
+            </div>
+            <h1 class="text-4xl md:text-5xl lg:text-7xl font-extrabold text-white leading-tight mb-6">
+                Enciende tus aires acondicionados sin culpa y <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#ffb111] to-yellow-200">congela tu recibo de CFE</span> en 30 días.
+            </h1>
+            <p class="text-xl md:text-2xl text-red-100 mb-10 max-w-3xl mx-auto">
+                Únete a las +300 familias yucatecas que ya pagan solo <strong class="text-white">$50 pesos al bimestre</strong> con nuestro sistema llave en mano, sin descapitalizarse.
+            </p>
+            
+            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                <button onclick="openModal()" class="w-full sm:w-auto text-lg flex items-center justify-center gap-2 bg-[#ffb111] hover:bg-[#e59f0f] text-[#a70101] px-8 py-4 rounded-full font-extrabold transition-all transform hover:-translate-y-1 shadow-[0_10px_30px_rgba(255,177,17,0.4)]">
+                    Agendar Estudio de Ahorro GRATIS
+                    <i data-lucide="arrow-right" class="h-5 w-5"></i>
+                </button>
+                <p class="text-red-200 text-sm flex items-center gap-1 mt-2 sm:mt-0">
+                    <i data-lucide="clock" class="h-4 w-4"></i> Solo 12 lugares disponibles este mes.
+                </p>
+            </div>
+        </div>
+    </section>
 
-            const handleOptionSelect = (field, value) => {
-                setAnswers(prev => ({ ...prev, [field]: value }));
-                setStep(prev => prev + 1);
-            };
+    <!-- Problem Agitation -->
+    <section class="py-20 bg-white">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-3xl md:text-4xl font-bold text-[#a70101] mb-12">
+                El calor en Mérida no perdona, <span class="text-red-600">las tarifas de CFE tampoco.</span>
+            </h2>
+            
+            <div class="grid md:grid-cols-3 gap-8 text-left">
+                <div class="p-6 rounded-2xl bg-slate-50 border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
+                    <div class="w-12 h-12 bg-red-100 text-red-600 rounded-xl flex items-center justify-center mb-4">
+                        <i data-lucide="trending-down" class="h-6 w-6"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-[#a70101] mb-2">Tarifas DAC Castigadoras</h3>
+                    <p class="text-slate-600">Si excedes el límite, pierdes el subsidio del gobierno y tu recibo se multiplica hasta un 300%. Es una trampa financiera.</p>
+                </div>
+                <div class="p-6 rounded-2xl bg-slate-50 border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
+                    <div class="w-12 h-12 bg-orange-100 text-orange-600 rounded-xl flex items-center justify-center mb-4">
+                        <i data-lucide="sun" class="h-6 w-6"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-[#a70101] mb-2">Estrés Climático</h3>
+                    <p class="text-slate-600">Con temperaturas de más de 40°C, apagar el aire acondicionado para ahorrar no es una opción, es un riesgo para la salud y el descanso.</p>
+                </div>
+                <div class="p-6 rounded-2xl bg-slate-50 border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
+                    <div class="w-12 h-12 bg-slate-200 text-slate-700 rounded-xl flex items-center justify-center mb-4">
+                        <i data-lucide="file-text" class="h-6 w-6"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-[#a70101] mb-2">Trámites Burocráticos</h3>
+                    <p class="text-slate-600">Lidiar con permisos, medidores bidireccionales y contratos de CFE es un dolor de cabeza que toma meses si no eres experto.</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-            // =========================================================================
-            // 🟢 3. CONEXIÓN CON MAKE.COM (INTEGROMAT)
-            // =========================================================================
-            const handleFormSubmit = async (e) => {
-                e.preventDefault();
-                setIsSubmitting(true);
-
-                // REEMPLAZA ESTA URL CON TU WEBHOOK DE MAKE.COM
-                const MAKE_WEBHOOK_URL = "https://hook.us1.make.com/tu-codigo-unico-de-webhook";
-
-                try {
-                    // Enviamos los datos capturados a Make
-                    await fetch(MAKE_WEBHOOK_URL, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify(answers)
-                    });
-                    console.log("✅ Datos enviados a Make correctamente");
-                } catch (error) {
-                    console.error("❌ Error enviando a Make:", error);
-                    // Aunque falle Make, no queremos bloquear al usuario, así que seguimos adelante.
-                }
-
-                setIsSubmitting(false);
-                setShowOffer(true); // Mostramos la oferta irresistible
-            };
-
-            const whatsappNumber = "529990000000"; 
-            const whatsappMessage = encodeURIComponent(`Hola, acabo de completar el diagnóstico. Mi nombre es ${answers.nombre}, tengo un problema de ${answers.plaga} y quiero reservar el paquete Escudo Mérida por $990 MXN.`);
-
-            return (
-                <div className="min-h-screen flex flex-col">
-                    
-                    <header className="bg-white border-b border-slate-200 sticky top-0 z-50">
-                        <div className="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
-                            <div className="flex items-center gap-2">
-                                <ShieldCheck className="text-blue-600 w-8 h-8" />
-                                <span className="text-xl font-bold tracking-tight text-slate-900">Nuñez Fumigaciones</span>
+    <!-- Interactive Calculator -->
+    <section class="py-16 bg-[#a70101] relative border-y border-red-900">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="bg-[#7a0101] rounded-3xl p-8 md:p-12 shadow-2xl border border-red-800 relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-64 h-64 bg-[#ffb111] opacity-10 rounded-full blur-[80px] pointer-events-none"></div>
+                
+                <div class="grid md:grid-cols-2 gap-12 items-center relative z-10">
+                    <div>
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="p-3 bg-[#ffb111]/20 rounded-lg">
+                                <i data-lucide="calculator" class="h-6 w-6 text-[#ffb111]"></i>
                             </div>
-                            <div className="hidden sm:flex items-center gap-2 text-sm font-semibold text-slate-600 bg-slate-100 px-3 py-1.5 rounded-full">
-                                <MapPin className="w-4 h-4 text-blue-600" />
-                                Solo en Mérida, Yucatán
+                            <h2 class="text-2xl md:text-3xl font-bold text-white">Descubre tu fuga de dinero</h2>
+                        </div>
+                        <p class="text-red-100 mb-8">Usa la calculadora para ver cuánto le vas a regalar a CFE en los próximos años si no haces nada hoy.</p>
+                        
+                        <div class="mb-6">
+                            <label class="block text-sm font-medium text-red-100 mb-2">
+                                ¿De cuánto llega tu recibo bimestral de CFE?
+                            </label>
+                            <div class="flex items-center gap-4">
+                                <span class="text-2xl text-red-200 font-bold">$</span>
+                                <input 
+                                    type="range" 
+                                    id="billSlider"
+                                    min="1000" 
+                                    max="15000" 
+                                    step="500"
+                                    value="3000" 
+                                    class="w-full h-2 bg-red-900 rounded-lg appearance-none cursor-pointer accent-[#ffb111]"
+                                />
+                            </div>
+                            <div class="mt-4 text-4xl font-extrabold text-[#ffb111]">
+                                $<span id="billValueDisplay">3,000</span> <span class="text-lg text-red-200 font-normal">MXN / bimestre</span>
                             </div>
                         </div>
-                    </header>
-
-                    <div className="flex-grow">
-                    {!showOffer ? (
-                        <main className="max-w-4xl mx-auto px-4 py-12 md:py-20">
-                            <div className="text-center mb-10">
-                                <h1 className="text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight mb-4 leading-tight">
-                                    Descubre qué plaga amenaza tu hogar y <span className="text-blue-600">cómo eliminarla para siempre.</span>
-                                </h1>
-                                <p className="text-lg md:text-xl text-slate-600 max-w-2xl mx-auto">
-                                    Realiza este diagnóstico de 30 segundos para recibir un plan de acción exacto y un presupuesto personalizado. Gratis y sin compromiso.
-                                </p>
-                            </div>
-
-                            <div className="bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden max-w-2xl mx-auto transition-all">
-                                <div className="bg-blue-600 h-2 w-full">
-                                    <div className="bg-green-400 h-full transition-all duration-500 ease-in-out" style={{ width: `${(step / 4) * 100}%` }}></div>
-                                </div>
-                                
-                                <div className="p-6 md:p-10">
-                                    {step === 0 && (
-                                        <div className="animate-fade-in">
-                                            <h2 className="text-2xl font-bold mb-6 flex items-center gap-3">
-                                                <Bug className="text-blue-600 w-6 h-6" /> ¿Qué has visto en tu casa últimamente?
-                                            </h2>
-                                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                                {['Cucarachas', 'Hormigas', 'Mosquitos / Dengue', 'Termitas', 'Roedores', 'No estoy seguro'].map((item) => (
-                                                    <button key={item} onClick={() => handleOptionSelect('plaga', item)} className="p-4 border-2 border-slate-200 rounded-xl text-left font-semibold text-slate-700 hover:border-blue-600 hover:bg-blue-50 transition-colors flex justify-between items-center group">
-                                                        {item} <ChevronRight className="w-5 h-5 text-slate-400 group-hover:text-blue-600" />
-                                                    </button>
-                                                ))}
-                                            </div>
-                                        </div>
-                                    )}
-
-                                    {step === 1 && (
-                                        <div className="animate-fade-in">
-                                            <h2 className="text-2xl font-bold mb-6 flex items-center gap-3">
-                                                <Home className="text-blue-600 w-6 h-6" /> ¿Dónde es el problema principal?
-                                            </h2>
-                                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                                {['Cocina y Baños', 'Jardín y Exteriores', 'Habitaciones', 'Techos / Madera', 'En toda la casa'].map((item) => (
-                                                    <button key={item} onClick={() => handleOptionSelect('ubicacion', item)} className="p-4 border-2 border-slate-200 rounded-xl text-left font-semibold text-slate-700 hover:border-blue-600 hover:bg-blue-50 transition-colors flex justify-between items-center group">
-                                                        {item} <ChevronRight className="w-5 h-5 text-slate-400 group-hover:text-blue-600" />
-                                                    </button>
-                                                ))}
-                                            </div>
-                                        </div>
-                                    )}
-
-                                    {step === 2 && (
-                                        <div className="animate-fade-in">
-                                            <h2 className="text-2xl font-bold mb-6 flex items-center gap-3">
-                                                <Clock className="text-blue-600 w-6 h-6" /> ¿Hace cuánto notaste el problema?
-                                            </h2>
-                                            <div className="grid grid-cols-1 gap-4">
-                                                {['Acaba de empezar (Menos de 1 semana)', 'Un par de semanas (Ya intenté insecticidas)', 'Lleva meses (Es una plaga persistente)'].map((item) => (
-                                                    <button key={item} onClick={() => handleOptionSelect('tiempo', item)} className="p-4 border-2 border-slate-200 rounded-xl text-left font-semibold text-slate-700 hover:border-blue-600 hover:bg-blue-50 transition-colors flex justify-between items-center group">
-                                                        {item} <ChevronRight className="w-5 h-5 text-slate-400 group-hover:text-blue-600" />
-                                                    </button>
-                                                ))}
-                                            </div>
-                                        </div>
-                                    )}
-
-                                    {step === 3 && (
-                                        <div className="animate-fade-in">
-                                            <div className="text-center mb-6">
-                                                <ShieldAlert className="w-16 h-16 text-green-500 mx-auto mb-4" />
-                                                <h2 className="text-2xl font-bold mb-2">¡Diagnóstico Listo!</h2>
-                                                <p className="text-slate-600">Basado en tus respuestas, tenemos la solución exacta para tu problema de <strong>{answers.plaga}</strong>. Ingresa tus datos para ver tu reporte y desbloquear una oferta especial.</p>
-                                            </div>
-                                            
-                                            <form onSubmit={handleFormSubmit} className="space-y-4">
-                                                <div>
-                                                    <label className="block text-sm font-semibold mb-1 text-slate-700">Tu Nombre</label>
-                                                    <input type="text" required className="w-full p-4 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-blue-600" placeholder="Ej. Carlos Pérez" value={answers.nombre} onChange={(e) => setAnswers({...answers, nombre: e.target.value})} />
-                                                </div>
-                                                <div>
-                                                    <label className="block text-sm font-semibold mb-1 text-slate-700">Teléfono (WhatsApp)</label>
-                                                    <input type="tel" required className="w-full p-4 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-blue-600" placeholder="Ej. 999 123 4567" value={answers.telefono} onChange={(e) => setAnswers({...answers, telefono: e.target.value})} />
-                                                </div>
-                                                <button type="submit" disabled={isSubmitting} className="w-full bg-blue-600 text-white font-bold text-lg p-4 rounded-xl hover:bg-blue-700 transition-colors shadow-lg shadow-blue-200 flex items-center justify-center gap-2 mt-4 disabled:opacity-70">
-                                                    {isSubmitting ? 'Analizando...' : 'Ver mi Solución Exacta'} <ArrowRight className="w-5 h-5" />
-                                                </button>
-                                                <p className="text-xs text-center text-slate-400 mt-3">
-                                                    Tus datos están 100% seguros. No te enviaremos spam.
-                                                </p>
-                                            </form>
-                                        </div>
-                                    )}
-                                </div>
-                            </div>
-                        </main>
-                    ) : (
-                        <main className="animate-fade-in pb-20">
-                            <div className="bg-red-600 text-white text-center py-3 px-4 font-medium">
-                                🔥 <strong>Atención {answers.nombre}:</strong> Por la temporada de calor en Mérida, los problemas de {answers.plaga || 'plagas'} empeoran. Solo aceptamos 15 servicios nuevos esta semana.
-                            </div>
-
-                            <div className="max-w-5xl mx-auto px-4 py-12">
-                                <div className="text-center mb-12">
-                                    <h2 className="text-4xl md:text-5xl font-black text-slate-900 mb-6 leading-tight">
-                                        Aquí tienes tu Plan de Ataque.
-                                    </h2>
-                                    <p className="text-xl text-slate-600 max-w-3xl mx-auto">
-                                        La mayoría rocían agua con olor, te cobran y desaparecen cuando los insectos vuelven. <strong className="text-blue-600">Nosotros no.</strong>
-                                    </p>
-                                </div>
-
-                                <div className="bg-white rounded-3xl shadow-xl border border-slate-200 overflow-hidden lg:flex mb-12">
-                                    <div className="p-8 lg:w-3/5">
-                                        <h3 className="text-2xl font-bold mb-6 text-slate-900">El Paquete "Escudo Mérida" 🛡️</h3>
-                                        <p className="text-slate-600 mb-8">Diseñado específicamente para el clima húmedo de Yucatán y para erradicar tu problema de {answers.plaga}, sin riesgo para mascotas o familia.</p>
-                                        
-                                        <ul className="space-y-4">
-                                            <li className="flex items-start gap-4">
-                                                <div className="bg-green-100 p-1 rounded-full shrink-0 mt-1"><CheckCircle2 className="w-5 h-5 text-green-600" /></div>
-                                                <div>
-                                                    <h4 className="font-bold text-slate-900">Fumigación Profunda Interior y Exterior</h4>
-                                                    <p className="text-sm text-slate-600">Eliminación total en nidos y criaderos. Productos de grado hospitalario.</p>
-                                                    <span className="text-xs font-semibold text-slate-400 line-through">Valor: $1,200 MXN</span>
-                                                </div>
-                                            </li>
-                                            <li className="flex items-start gap-4">
-                                                <div className="bg-green-100 p-1 rounded-full shrink-0 mt-1"><CheckCircle2 className="w-5 h-5 text-green-600" /></div>
-                                                <div>
-                                                    <h4 className="font-bold text-slate-900">Barrera Química Perimetral</h4>
-                                                    <p className="text-sm text-slate-600">Evita que nuevas plagas de los vecinos o la calle entren a tu propiedad.</p>
-                                                    <span className="text-xs font-semibold text-slate-400 line-through">Valor: $800 MXN</span>
-                                                </div>
-                                            </li>
-                                            <li className="flex items-start gap-4">
-                                                <div className="bg-blue-100 p-1 rounded-full shrink-0 mt-1"><Star className="w-5 h-5 text-blue-600" /></div>
-                                                <div>
-                                                    <h4 className="font-bold text-slate-900">BONO: Refuerzo Anti-Mosquitos</h4>
-                                                    <p className="text-sm text-slate-600">Tratamiento para patios que protege a tu familia del Dengue.</p>
-                                                    <span className="text-xs font-semibold text-slate-400 line-through">Valor: $600 MXN</span>
-                                                </div>
-                                            </li>
-                                        </ul>
-
-                                        <div className="mt-8 p-5 bg-blue-50 rounded-xl border border-blue-100">
-                                            <div className="flex items-center gap-3 mb-2">
-                                                <ShieldCheck className="w-6 h-6 text-blue-600" />
-                                                <h4 className="font-bold text-lg text-slate-900">Garantía Incondicional de 30 Días</h4>
-                                            </div>
-                                            <p className="text-sm text-slate-700">
-                                                Nuestra promesa es simple: <strong>Si ves un solo bicho vivo en los siguientes 30 días, regresamos y re-fumigamos GRATIS.</strong> Cero riesgos para ti.
-                                            </p>
-                                        </div>
-                                    </div>
-
-                                    <div className="bg-slate-900 text-white p-8 lg:w-2/5 flex flex-col justify-center relative overflow-hidden">
-                                        <div className="absolute -top-10 -right-10 opacity-10">
-                                            <Bug className="w-48 h-48" />
-                                        </div>
-                                        
-                                        <h3 className="text-xl font-medium text-slate-300 mb-2 z-10">Valor Total: <span className="line-through text-red-400">$2,600 MXN</span></h3>
-                                        <div className="mb-6 z-10">
-                                            <span className="text-sm font-semibold uppercase tracking-wider text-blue-400">Oferta Exclusiva Hoy</span>
-                                            <div className="text-5xl font-black mt-1">$990 <span className="text-xl font-medium text-slate-400">MXN</span></div>
-                                        </div>
-                                        
-                                        <a href={`https://wa.me/${whatsappNumber}?text=${whatsappMessage}`} target="_blank" rel="noreferrer" className="w-full bg-green-500 hover:bg-green-400 text-slate-900 text-center font-extrabold text-lg p-5 rounded-xl transition-all hover:scale-105 shadow-xl shadow-green-500/20 z-10 flex items-center justify-center gap-2">
-                                            <Phone className="w-5 h-5" /> Reservar por WhatsApp
-                                        </a>
-                                        
-                                        <p className="text-sm text-center text-slate-400 mt-4 z-10">
-                                            Respuesta rápida. Sin cargos ocultos.
-                                        </p>
-                                    </div>
-                                </div>
-
-                                <div className="mt-16 text-center">
-                                    <h3 className="text-2xl font-bold text-slate-900 mb-8">Por qué familias en Mérida confían en nosotros:</h3>
-                                    <div className="grid md:grid-cols-3 gap-6 text-left">
-                                        {[
-                                            { name: "María F. (Norte de Mérida)", text: "Solo Nuñez Fumigaciones resolvió el problema de raíz. No huele a químicos feos." },
-                                            { name: "Jorge M. (Cholul)", text: "El bono de mosquitos es real. Por fin pudimos salir al patio a cenar. Muy profesionales." },
-                                            { name: "Laura T. (Fco. de Montejo)", text: "Aplicaron su garantía al mes cuando vi unas hormiguitas, sin cobrarme un peso extra." }
-                                        ].map((testimonial, i) => (
-                                            <div key={i} className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
-                                                <div className="flex gap-1 mb-3 text-yellow-400">
-                                                    <Star className="w-4 h-4" /><Star className="w-4 h-4" /><Star className="w-4 h-4" /><Star className="w-4 h-4" /><Star className="w-4 h-4" />
-                                                </div>
-                                                <p className="text-slate-600 mb-4 text-sm italic">"{testimonial.text}"</p>
-                                                <p className="font-bold text-slate-900 text-sm">- {testimonial.name}</p>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
-                            </div>
-                        </main>
-                    )}
                     </div>
 
-                    <footer className="bg-slate-900 text-slate-400 py-8 text-center text-sm mt-auto">
-                        <div className="max-w-4xl mx-auto px-4 flex flex-col items-center">
-                            <ShieldCheck className="w-8 h-8 text-slate-600 mb-4" />
-                            <p>© {new Date().getFullYear()} Nuñez Fumigaciones. Mérida, Yucatán.</p>
-                            <p className="mt-2 text-slate-500">Protegiendo tu hogar, tu salud y tu tranquilidad.</p>
+                    <div class="bg-[#5c0000] rounded-2xl p-6 border border-red-900">
+                        <h3 class="text-white font-bold text-lg mb-4 text-center">El costo de no hacer nada</h3>
+                        
+                        <div class="space-y-4">
+                            <div class="flex justify-between items-center pb-4 border-b border-red-800">
+                                <span class="text-red-200">Gasto en 1 Año:</span>
+                                <span class="text-white font-semibold">$<span id="calcAnual">18,000</span></span>
+                            </div>
+                            <div class="flex justify-between items-center pb-4 border-b border-red-800">
+                                <span class="text-red-200">Gasto en 10 Años (Sin paneles):</span>
+                                <span class="text-[#ffb111] font-bold">$<span id="calc10Years">180,000</span></span>
+                            </div>
+                            <div class="pt-2">
+                                <span class="block text-sm text-red-200 mb-1">Costo real a 10 años (con inflación CFE calculada):</span>
+                                <span class="block text-3xl font-black text-red-400">$<span id="calcProjected">243,000</span> MXN</span>
+                                <p class="text-xs text-red-300 mt-2">Ese dinero sale de tu bolsillo y nunca regresa. ¿Por qué no invertir una fracción de eso en un activo para tu casa?</p>
+                            </div>
                         </div>
-                    </footer>
+                    </div>
                 </div>
-            );
+            </div>
+        </div>
+    </section>
+
+    <!-- The Grand Slam Offer -->
+    <section class="py-20 bg-[#a70101] text-white">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-5xl font-bold mb-4">
+                    Presentamos el Sistema <span class="text-[#ffb111]">"Cero Estrés"</span>
+                </h2>
+                <p class="text-xl text-red-100 max-w-2xl mx-auto">
+                    No solo vendemos paneles. Vendemos el resultado final: un recibo de $50 pesos. Nosotros nos encargamos del 100% del proceso.
+                </p>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <div class="space-y-6">
+                    <h3 class="text-2xl font-bold mb-6 border-b border-red-800 pb-4">Lo que obtienes hoy:</h3>
+                    
+                    <!-- Offer Items -->
+                    <div class="flex gap-4 items-start">
+                        <div class="mt-1 flex-shrink-0 bg-[#ffb111]/20 p-2 rounded-full text-[#ffb111]"><i data-lucide="sun"></i></div>
+                        <div>
+                            <h4 class="text-lg font-bold text-white flex items-center gap-2">Paneles Tier 1 (Grado Inversión)</h4>
+                            <p class="text-red-100 text-sm mt-1">La misma tecnología que usan las granjas solares comerciales. Resistentes a los huracanes de la península.</p>
+                            <span class="inline-block mt-1 text-xs font-semibold text-[#a70101] bg-[#ffb111] px-2 py-1 rounded">Garantía 25 años</span>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-4 items-start">
+                        <div class="mt-1 flex-shrink-0 bg-[#ffb111]/20 p-2 rounded-full text-[#ffb111]"><i data-lucide="zap"></i></div>
+                        <div>
+                            <h4 class="text-lg font-bold text-white flex items-center gap-2">Microinversores de Alta Eficiencia</h4>
+                            <p class="text-red-100 text-sm mt-1">Aprovechan hasta la última gota de sol yucateco, incluso en días nublados.</p>
+                            <span class="inline-block mt-1 text-xs font-semibold text-[#a70101] bg-[#ffb111] px-2 py-1 rounded">Generación Optimizada</span>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-4 items-start">
+                        <div class="mt-1 flex-shrink-0 bg-[#ffb111]/20 p-2 rounded-full text-[#ffb111]"><i data-lucide="file-text"></i></div>
+                        <div>
+                            <h4 class="text-lg font-bold text-white flex items-center gap-2">Gestión 100% con CFE (Bono)</h4>
+                            <p class="text-red-100 text-sm mt-1">Hacemos las filas y el papeleo por ti. Entregamos con medidor bidireccional instalado.</p>
+                            <span class="inline-block mt-1 text-xs font-semibold text-[#a70101] bg-[#ffb111] px-2 py-1 rounded">Valor: Invaluable</span>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-4 items-start">
+                        <div class="mt-1 flex-shrink-0 bg-[#ffb111]/20 p-2 rounded-full text-[#ffb111]"><i data-lucide="phone"></i></div>
+                        <div>
+                            <h4 class="text-lg font-bold text-white flex items-center gap-2">Monitoreo 24/7 en tu Celular (Bono)</h4>
+                            <p class="text-red-100 text-sm mt-1">App en tiempo real para que veas exactamente cuánta energía y dinero estás produciendo.</p>
+                            <span class="inline-block mt-1 text-xs font-semibold text-[#a70101] bg-[#ffb111] px-2 py-1 rounded">Valor: $3,500 MXN</span>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-4 items-start">
+                        <div class="mt-1 flex-shrink-0 bg-[#ffb111]/20 p-2 rounded-full text-[#ffb111]"><i data-lucide="wrench"></i></div>
+                        <div>
+                            <h4 class="text-lg font-bold text-white flex items-center gap-2">Primer Mantenimiento GRATIS (Bono)</h4>
+                            <p class="text-red-100 text-sm mt-1">Limpieza y revisión estructural a los 6 meses para asegurar producción óptima.</p>
+                            <span class="inline-block mt-1 text-xs font-semibold text-[#a70101] bg-[#ffb111] px-2 py-1 rounded">Valor: $2,000 MXN</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-[#7a0101] p-8 md:p-10 rounded-3xl border border-red-800 shadow-2xl relative">
+                    <div class="absolute -top-5 -right-5 bg-red-600 text-white font-bold py-2 px-6 rounded-full transform rotate-3 shadow-lg border border-red-400">
+                        Oferta Limitada
+                    </div>
+                    <h3 class="text-3xl font-bold mb-2">Resumen de la Oferta</h3>
+                    <p class="text-red-200 mb-8">Todo lo necesario para independizarte de CFE.</p>
+                    
+                    <div class="flex justify-between items-center mb-4 text-lg">
+                        <span>Instalación Llave en Mano</span>
+                        <span class="font-bold text-[#ffb111]">Incluido</span>
+                    </div>
+                    <div class="flex justify-between items-center mb-4 text-lg">
+                        <span>Trámites CFE</span>
+                        <span class="font-bold text-[#ffb111]">Gratis hoy</span>
+                    </div>
+                    <div class="flex justify-between items-center mb-8 text-lg">
+                        <span>Bonos Especiales</span>
+                        <span class="font-bold text-[#ffb111]">Gratis hoy</span>
+                    </div>
+
+                    <div class="border-t border-red-800 pt-6 mb-8">
+                        <p class="text-sm text-red-200 mb-2">Opciones de pago</p>
+                        <p class="text-xl font-semibold">
+                            Págalo de contado o financiado hasta a <span class="text-[#ffb111] text-2xl font-bold">60 meses</span>.
+                        </p>
+                        <p class="text-sm mt-2 text-red-300">
+                            (En muchos casos, la mensualidad del financiamiento es MENOR a lo que ya le pagas a CFE hoy).
+                        </p>
+                    </div>
+
+                    <button onclick="openModal()" class="w-full text-xl flex items-center justify-center gap-2 bg-[#ffb111] hover:bg-[#e59f0f] text-[#a70101] px-8 py-5 rounded-xl font-extrabold transition-all shadow-[0_5px_20px_rgba(255,177,17,0.4)]">
+                        Reclamar esta oferta
+                        <i data-lucide="arrow-right" class="h-6 w-6"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Risk Reversal -->
+    <section class="py-16 bg-[#ffb111] text-[#a70101]">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div class="flex justify-center mb-6 opacity-90">
+                <i data-lucide="shield-check" class="h-20 w-20"></i>
+            </div>
+            <h2 class="text-3xl md:text-5xl font-extrabold mb-6">La Garantía "Paz Mental" de 25 Años</h2>
+            <p class="text-xl md:text-2xl mb-8 font-medium">
+                Si tu sistema no produce la energía que te prometimos en el contrato, <strong class="underline decoration-4 underline-offset-4 decoration-[#a70101]">nosotros te pagamos la diferencia</strong> de tu recibo de CFE.
+            </p>
+            <p class="text-lg opacity-90 max-w-2xl mx-auto font-medium">
+                Garantía de producción por contrato. Garantía contra huracanes en estructuras. Cero riesgo para ti. Todo el riesgo lo asumimos nosotros.
+            </p>
+        </div>
+    </section>
+
+    <!-- Social Proof -->
+    <section class="py-20 bg-white">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-3xl md:text-4xl font-bold text-[#a70101] mb-4">Lo que dicen nuestros clientes en Mérida</h2>
+            <p class="text-slate-600 mb-12">Personas reales que ya se liberaron de la tarifa DAC.</p>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Card 1 -->
+                <div class="bg-white p-8 rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.05)] border border-slate-100 relative text-left">
+                    <div class="flex text-[#ffb111] mb-4 gap-1">
+                        <i data-lucide="star" class="w-5 h-5 fill-current"></i><i data-lucide="star" class="w-5 h-5 fill-current"></i><i data-lucide="star" class="w-5 h-5 fill-current"></i><i data-lucide="star" class="w-5 h-5 fill-current"></i><i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                    </div>
+                    <p class="text-slate-600 mb-6 italic">"Pagaba muchísimo de luz en verano por tener 3 aires encendidos. Los contacté, me hicieron un plan de financiamiento y mi recibo bajó a 53 pesos. El trámite de CFE lo hicieron ellos sin que yo me moviera de mi casa."</p>
+                    <div class="mb-4 bg-slate-50 p-3 rounded-lg border border-slate-100 flex justify-between items-center">
+                        <div class="text-center">
+                            <p class="text-xs text-slate-500 uppercase tracking-wide">Antes</p>
+                            <p class="text-red-600 font-bold line-through">$6,500 MXN</p>
+                        </div>
+                        <i data-lucide="arrow-right" class="text-slate-300 w-4 h-4"></i>
+                        <div class="text-center">
+                            <p class="text-xs text-slate-500 uppercase tracking-wide">Ahora</p>
+                            <p class="text-[#d6950e] font-extrabold text-lg">$53 MXN</p>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-[#a70101]">Carlos Mendoza</h4>
+                        <p class="text-xs text-slate-500">📍 Fracc. Las Américas</p>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="bg-white p-8 rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.05)] border border-slate-100 relative text-left">
+                    <div class="flex text-[#ffb111] mb-4 gap-1">
+                        <i data-lucide="star" class="w-5 h-5 fill-current"></i><i data-lucide="star" class="w-5 h-5 fill-current"></i><i data-lucide="star" class="w-5 h-5 fill-current"></i><i data-lucide="star" class="w-5 h-5 fill-current"></i><i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                    </div>
+                    <p class="text-slate-600 mb-6 italic">"Tenía miedo de que rompieran mi techo o hubiera goteras. Su equipo de instalación fue súper limpio y profesional. Ya pasamos un norte fuerte y los paneles ni se inmutaron. Altamente recomendados."</p>
+                    <div class="mb-4 bg-slate-50 p-3 rounded-lg border border-slate-100 flex justify-between items-center">
+                        <div class="text-center">
+                            <p class="text-xs text-slate-500 uppercase tracking-wide">Antes</p>
+                            <p class="text-red-600 font-bold line-through">$4,200 MXN</p>
+                        </div>
+                        <i data-lucide="arrow-right" class="text-slate-300 w-4 h-4"></i>
+                        <div class="text-center">
+                            <p class="text-xs text-slate-500 uppercase tracking-wide">Ahora</p>
+                            <p class="text-[#d6950e] font-extrabold text-lg">$48 MXN</p>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-[#a70101]">Ana Laura R.</h4>
+                        <p class="text-xs text-slate-500">📍 Altabrisa</p>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="bg-white p-8 rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.05)] border border-slate-100 relative text-left">
+                    <div class="flex text-[#ffb111] mb-4 gap-1">
+                        <i data-lucide="star" class="w-5 h-5 fill-current"></i><i data-lucide="star" class="w-5 h-5 fill-current"></i><i data-lucide="star" class="w-5 h-5 fill-current"></i><i data-lucide="star" class="w-5 h-5 fill-current"></i><i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                    </div>
+                    <p class="text-slate-600 mb-6 italic">"Habíamos caído en tarifa DAC y estábamos desesperados. Perfect Home nos asesoró de forma honesta, sin querer vendernos de más. La app en el celular es adictiva, me encanta ver cuánto estoy ahorrando."</p>
+                    <div class="mb-4 bg-slate-50 p-3 rounded-lg border border-slate-100 flex justify-between items-center">
+                        <div class="text-center">
+                            <p class="text-xs text-slate-500 uppercase tracking-wide">Antes</p>
+                            <p class="text-red-600 font-bold line-through">$8,900 MXN (DAC)</p>
+                        </div>
+                        <i data-lucide="arrow-right" class="text-slate-300 w-4 h-4"></i>
+                        <div class="text-center">
+                            <p class="text-xs text-slate-500 uppercase tracking-wide">Ahora</p>
+                            <p class="text-[#d6950e] font-extrabold text-lg">$65 MXN</p>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-[#a70101]">Familia Vázquez</h4>
+                        <p class="text-xs text-slate-500">📍 Cholul</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="py-20 bg-slate-50">
+        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl md:text-4xl font-bold text-[#a70101] text-center mb-12">Preguntas Frecuentes</h2>
+            <div class="space-y-4">
+                
+                <div class="bg-white border border-slate-200 rounded-xl overflow-hidden faq-item">
+                    <button class="w-full px-6 py-4 flex justify-between items-center text-left focus:outline-none faq-btn">
+                        <span class="font-bold text-[#a70101] pr-4">¿Cuánto tiempo tarda la instalación y el trámite de CFE?</span>
+                        <i data-lucide="chevron-down" class="h-5 w-5 text-slate-400 faq-icon transition-transform"></i>
+                    </button>
+                    <div class="px-6 max-h-0 opacity-0 overflow-hidden transition-all duration-300 ease-in-out faq-content">
+                        <p class="text-slate-600 border-t border-slate-100 pt-4 pb-4">La instalación física en tu techo nos toma 1 a 2 días dependiendo del tamaño. El trámite con CFE (cambio de medidor bidireccional) suele tomar entre 2 a 4 semanas. Nosotros gestionamos todo.</p>
+                    </div>
+                </div>
+
+                <div class="bg-white border border-slate-200 rounded-xl overflow-hidden faq-item">
+                    <button class="w-full px-6 py-4 flex justify-between items-center text-left focus:outline-none faq-btn">
+                        <span class="font-bold text-[#a70101] pr-4">¿Qué pasa si hay un huracán?</span>
+                        <i data-lucide="chevron-down" class="h-5 w-5 text-slate-400 faq-icon transition-transform"></i>
+                    </button>
+                    <div class="px-6 max-h-0 opacity-0 overflow-hidden transition-all duration-300 ease-in-out faq-content">
+                        <p class="text-slate-600 border-t border-slate-100 pt-4 pb-4">Nuestras estructuras están calculadas por ingenieros para soportar vientos huracanados de categoría 4. Además, utilizamos anclajes especiales para lozas yucatecas garantizando que no habrá desprendimientos ni filtraciones de agua.</p>
+                    </div>
+                </div>
+
+                <div class="bg-white border border-slate-200 rounded-xl overflow-hidden faq-item">
+                    <button class="w-full px-6 py-4 flex justify-between items-center text-left focus:outline-none faq-btn">
+                        <span class="font-bold text-[#a70101] pr-4">¿Es muy caro? No tengo el dinero de contado.</span>
+                        <i data-lucide="chevron-down" class="h-5 w-5 text-slate-400 faq-icon transition-transform"></i>
+                    </button>
+                    <div class="px-6 max-h-0 opacity-0 overflow-hidden transition-all duration-300 ease-in-out faq-content">
+                        <p class="text-slate-600 border-t border-slate-100 pt-4 pb-4">No necesitas descapitalizarte. Contamos con planes de financiamiento donde la mensualidad de tus paneles suele ser IGUAL o MENOR a lo que ya le pagas a CFE hoy. Es decir, cambias un gasto perdido por una inversión que será tuya.</p>
+                    </div>
+                </div>
+
+                <div class="bg-white border border-slate-200 rounded-xl overflow-hidden faq-item">
+                    <button class="w-full px-6 py-4 flex justify-between items-center text-left focus:outline-none faq-btn">
+                        <span class="font-bold text-[#a70101] pr-4">¿Realmente voy a pagar $50 pesos?</span>
+                        <i data-lucide="chevron-down" class="h-5 w-5 text-slate-400 faq-icon transition-transform"></i>
+                    </button>
+                    <div class="px-6 max-h-0 opacity-0 overflow-hidden transition-all duration-300 ease-in-out faq-content">
+                        <p class="text-slate-600 border-t border-slate-100 pt-4 pb-4">Sí. Si dimensionamos tu sistema al 100% de tu consumo, solo pagarás el 'Cargo Fijo' de CFE por estar conectado a la red, que actualmente ronda los $50 a $60 pesos bimestrales en Mérida.</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Final Urgency CTA -->
+    <section class="py-20 bg-[#a70101] relative overflow-hidden text-center">
+        <div class="max-w-4xl mx-auto px-4 relative z-10">
+            <h2 class="text-4xl md:text-5xl font-bold text-white mb-6">El mejor momento para poner paneles fue hace 5 años. <br/><span class="text-[#ffb111]">El segundo mejor momento es hoy.</span></h2>
+            <p class="text-xl text-red-100 mb-10">Cada bimestre que pasa sin paneles solares, es dinero que le regalas a CFE y nunca volverás a ver.</p>
+            
+            <div class="bg-[#7a0101] p-6 rounded-2xl border border-red-800 inline-block mb-10 text-left">
+                <h4 class="text-white font-bold mb-2 flex items-center gap-2"><i data-lucide="clock" class="text-[#ffb111] h-5 w-5"></i> Urgencia Operativa:</h4>
+                <p class="text-red-100 text-sm max-w-md">Para mantener nuestro estándar de calidad 5 estrellas, <strong>solo aceptamos 15 proyectos residenciales por mes</strong> en Mérida. Actualmente nos quedan <strong class="text-[#ffb111] text-lg">3 lugares</strong> para este mes.</p>
+            </div>
+            <br />
+            <button onclick="openModal()" class="text-xl flex items-center justify-center gap-2 bg-[#ffb111] hover:bg-[#e59f0f] text-[#a70101] px-10 py-5 rounded-full font-extrabold transition-all transform hover:scale-105 shadow-[0_0_30px_rgba(255,177,17,0.6)] mx-auto w-full md:w-auto">
+                Asegurar mi lugar y cotizar <i data-lucide="arrow-right"></i>
+            </button>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-[#3a0000] py-10 text-red-200 text-sm text-center">
+        <div class="max-w-6xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-2 text-white">
+                <i data-lucide="sun" class="h-6 w-6 text-[#ffb111]"></i>
+                <span class="text-xl font-bold tracking-tight">
+                    Perfect <span class="text-[#ffb111]">Home</span>
+                </span>
+            </div>
+            <p>© <span id="year"></span> Perfect Home. Todos los derechos reservados.</p>
+            <div class="flex gap-4">
+                <a href="#" class="hover:text-white transition-colors">Privacidad</a>
+                <a href="#" class="hover:text-white transition-colors">Términos</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Mobile Sticky CTA -->
+    <div class="md:hidden fixed bottom-0 left-0 w-full p-4 bg-white border-t border-slate-200 shadow-[0_-10px_20px_rgba(0,0,0,0.1)] z-40">
+        <button onclick="openModal()" class="w-full flex items-center justify-center gap-2 bg-[#ffb111] hover:bg-[#e59f0f] text-[#a70101] px-6 py-3.5 rounded-xl font-extrabold text-lg shadow-lg">
+            ¡Quiero ahorrar ya!
+        </button>
+    </div>
+
+    <!-- 🔴 LEAD MODAL (El que envía a MAKE) 🔴 -->
+    <div id="leadModal" class="hidden fixed inset-0 z-[100] flex items-center justify-center p-4">
+        <!-- Backdrop -->
+        <div class="absolute inset-0 bg-[#a70101]/80 backdrop-blur-sm" onclick="closeModal()"></div>
+        
+        <!-- Modal Content -->
+        <div class="bg-white rounded-3xl w-full max-w-md relative z-10 overflow-hidden shadow-2xl transition-all transform duration-300 scale-95 opacity-0" id="modalContent">
+            
+            <button onclick="closeModal()" class="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 transition-colors z-20">
+                ✕
+            </button>
+
+            <!-- Form View -->
+            <div id="formView">
+                <div class="bg-[#a70101] px-6 py-8 text-center relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-[#ffb111] rounded-full blur-[50px] opacity-30"></div>
+                    <h3 class="text-2xl font-bold text-white mb-2 relative z-10">Solicita tu Estudio de Ahorro <span class="text-[#ffb111]">GRATIS</span></h3>
+                    <p class="text-red-100 text-sm relative z-10">Descubre exactamente cuántos paneles necesitas y en cuánto tiempo recuperas tu inversión. Sin compromisos.</p>
+                </div>
+                
+                <form id="leadForm" class="p-6 space-y-4">
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-1">Nombre Completo</label>
+                        <input type="text" name="nombre" required placeholder="Ej. Juan Pérez" class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-[#ffb111] focus:ring-2 focus:ring-[#ffb111]/20 outline-none transition-all">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-1">Teléfono (WhatsApp)</label>
+                        <input type="tel" name="telefono" required placeholder="Ej. 999 123 4567" class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-[#ffb111] focus:ring-2 focus:ring-[#ffb111]/20 outline-none transition-all">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-1">Pago Bimestral Aproximado ($)</label>
+                        <select name="pagoBimestral" class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-[#ffb111] focus:ring-2 focus:ring-[#ffb111]/20 outline-none transition-all bg-white" required>
+                            <option value="" disabled selected>Selecciona un rango...</option>
+                            <option value="1000-2500">$1,000 - $2,500 MXN</option>
+                            <option value="2500-5000">$2,500 - $5,000 MXN</option>
+                            <option value="5000-10000">$5,000 - $10,000 MXN</option>
+                            <option value="10000+">Más de $10,000 MXN</option>
+                        </select>
+                    </div>
+
+                    <div class="pt-2">
+                        <button type="submit" id="submitBtn" class="w-full text-lg flex items-center justify-center gap-2 px-6 py-4 rounded-xl font-extrabold transition-all shadow-lg bg-[#ffb111] hover:bg-[#e59f0f] text-[#a70101] hover:-translate-y-1">
+                            <span id="submitText">Obtener Estudio Gratuito</span>
+                        </button>
+                    </div>
+                    <p class="text-xs text-center text-slate-500 mt-4 flex items-center justify-center gap-1">
+                        <i data-lucide="shield-check" class="w-3 h-3"></i> Tus datos están seguros con nosotros.
+                    </p>
+                </form>
+            </div>
+
+            <!-- Success View -->
+            <div id="successView" class="hidden p-10 text-center">
+                <div class="w-20 h-20 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <i data-lucide="check-circle-2" class="w-10 h-10 text-[#ffb111]"></i>
+                </div>
+                <h3 class="text-2xl font-bold text-[#a70101] mb-2">¡Solicitud Exitosa!</h3>
+                <p class="text-slate-600 mb-8">Un experto en energía solar de Perfect Home se comunicará contigo por WhatsApp en los próximos 15 minutos para agendar tu estudio.</p>
+                <button onclick="closeModal()" class="w-full bg-[#a70101] hover:bg-[#7a0101] text-white px-6 py-3 rounded-xl font-bold transition-colors">
+                    Cerrar y volver a la página
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCRIPTS MÁGICOS (La lógica) -->
+    <script>
+        // Optimización 3: Esperar a que el HTML visual cargue antes de renderizar iconos
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+            document.getElementById('year').textContent = new Date().getFullYear();
+        });
+
+        // Navbar Scroll
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                nav.classList.remove('bg-[#a70101]/95', 'py-5');
+                nav.classList.add('bg-[#a70101]', 'shadow-lg', 'py-3');
+            } else {
+                nav.classList.add('bg-[#a70101]/95', 'py-5');
+                nav.classList.remove('bg-[#a70101]', 'shadow-lg', 'py-3');
+            }
+        });
+
+        // Calculadora Interactiva
+        const slider = document.getElementById('billSlider');
+        const displayVal = document.getElementById('billValueDisplay');
+        const calcAnual = document.getElementById('calcAnual');
+        const calc10Years = document.getElementById('calc10Years');
+        const calcProjected = document.getElementById('calcProjected');
+
+        function updateCalculator(val) {
+            const bimestral = Number(val);
+            const anual = bimestral * 6;
+            const years10 = anual * 10;
+            const projected = Math.round(years10 * 1.35);
+
+            displayVal.textContent = bimestral.toLocaleString();
+            calcAnual.textContent = anual.toLocaleString();
+            calc10Years.textContent = years10.toLocaleString();
+            calcProjected.textContent = projected.toLocaleString();
         }
 
-        const root = ReactDOM.createRoot(document.getElementById('root'));
-        root.render(<App />);
+        slider.addEventListener('input', (e) => updateCalculator(e.target.value));
+
+        // Acordeón FAQ
+        document.querySelectorAll('.faq-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const content = btn.nextElementSibling;
+                const icon = btn.querySelector('.faq-icon');
+                const isOpen = content.classList.contains('max-h-96');
+
+                // Close all others (opcional)
+                document.querySelectorAll('.faq-content').forEach(c => {
+                    c.classList.remove('max-h-96', 'opacity-100');
+                    c.classList.add('max-h-0', 'opacity-0');
+                });
+                document.querySelectorAll('.faq-icon').forEach(i => {
+                    i.classList.remove('text-[#a70101]', 'rotate-180');
+                    i.classList.add('text-slate-400');
+                });
+
+                if (!isOpen) {
+                    content.classList.remove('max-h-0', 'opacity-0');
+                    content.classList.add('max-h-96', 'opacity-100');
+                    icon.classList.remove('text-slate-400');
+                    icon.classList.add('text-[#a70101]', 'rotate-180');
+                }
+            });
+        });
+
+        // Lógica del Modal
+        const modal = document.getElementById('leadModal');
+        const modalContent = document.getElementById('modalContent');
+        const formView = document.getElementById('formView');
+        const successView = document.getElementById('successView');
+        const form = document.getElementById('leadForm');
+
+        function openModal() {
+            modal.classList.remove('hidden');
+            // Reset state
+            formView.classList.remove('hidden');
+            successView.classList.add('hidden');
+            form.reset();
+            
+            setTimeout(() => {
+                modalContent.classList.remove('scale-95', 'opacity-0');
+                modalContent.classList.add('scale-100', 'opacity-100');
+            }, 10);
+        }
+
+        function closeModal() {
+            modalContent.classList.remove('scale-100', 'opacity-100');
+            modalContent.classList.add('scale-95', 'opacity-0');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
+        }
+
+        // 🔴 ENVÍO A MAKE (WEBHOOK) 🔴
+        const MAKE_WEBHOOK_URL = "https://hook.us1.make.com/xxxxxxxxxxxxxxxxxxxx";
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const submitText = document.getElementById('submitText');
+            
+            // UI de carga
+            submitBtn.disabled = true;
+            submitBtn.classList.remove('bg-[#ffb111]', 'hover:bg-[#e59f0f]', 'text-[#a70101]');
+            submitBtn.classList.add('bg-slate-400', 'text-white');
+            submitText.textContent = "Procesando...";
+
+            const formData = new FormData(form);
+            const leadData = {
+                nombre: formData.get('nombre'),
+                telefono: formData.get('telefono'),
+                pagoBimestral: formData.get('pagoBimestral'),
+                fecha: new Date().toISOString(),
+                fuente: "Landing Page Perfect Home (HTML)"
+            };
+
+            try {
+                await fetch(MAKE_WEBHOOK_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(leadData)
+                });
+                
+                // 🔴 Disparar evento de conversión en el Pixel (Lead) 🔴
+                if (typeof fbq === 'function') {
+                    fbq('track', 'Lead');
+                }
+            } catch (error) {
+                console.error("Error Webhook:", error);
+            } finally {
+                // Mostrar éxito
+                submitBtn.disabled = false;
+                submitBtn.classList.add('bg-[#ffb111]', 'hover:bg-[#e59f0f]', 'text-[#a70101]');
+                submitBtn.classList.remove('bg-slate-400', 'text-white');
+                submitText.textContent = "Obtener Estudio Gratuito";
+                
+                formView.classList.add('hidden');
+                successView.classList.remove('hidden');
+            }
+        });
     </script>
-    
-    <style>
-        .animate-fade-in {
-            animation: fadeIn 0.5s ease-in-out;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-    </style>
 </body>
 </html>
